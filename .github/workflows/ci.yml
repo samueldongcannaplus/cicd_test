@@ -1,1 +1,30 @@
+name: Python Style Check
 
+# This workflow is triggered on push events to the 'main' branch
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  flake8:
+    # Use the latest version of the Ubuntu Linux runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code from your repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x' # Use a version of Python 3
+
+      # Step 3: Install flake8
+      - name: Install flake8
+        run: pip install flake8
+
+      # Step 4: Run the flake8 check
+      - name: Run flake8
+        run: python -m flake8 .

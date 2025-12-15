@@ -12,4 +12,9 @@ class VegeSyncer():
     def addItem(self, item: str) -> None:
         self.shopping_list.append(item)
     
+    def getSize(self) -> int:
+        return len(self.shopping_list)
+    
+    def test(self) -> int:
+        return 1
     

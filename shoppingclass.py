@@ -18,3 +18,7 @@ class VegeSyncer():
     def test(self) -> int:
         return 1
     
+    def h(self) -> bool:
+        if self.customer_name:
+            return True
+        return False

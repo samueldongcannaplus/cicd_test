@@ -1,51 +1,76 @@
-name: Python Style Check
+name: CI
 
-# This workflow is triggered on push events to the 'main' branch
 on:
   push:
-    branches: [ main ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "**" ]
 
 jobs:
-  ci:
-    # Use the latest version of the Ubuntu Linux runner
+  lint_soft:
+    # Run on feature branches + PRs (non-main)
+    if: github.ref_name != 'main'
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the code from your repository
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step 2: Set up the Python environment
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.x' # Use a version of Python 3
+          python-version: '3.x'
+      - run: pip install -r requirements.txt
+      - run: pip install pylint mypy flake8
+      - name: Azure login
+        uses: azure/login@v2 
+        with: 
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Step 3: Install requirements
-      - name: Install requirements
-        run: pip install -r requirements.txt
-
-      # Step 4: Install tests
-      - name: Install tests
-        run: pip install pylint mypy flake8
-
-      # Step 5: Run pylint
-      - name: Run pylint
+      - name: Prove az is logged in
+        run: az account show
+      # Soft checks
+      - name: pylint (soft)
         run: python -m pylint --disable=fixme .
         continue-on-error: true
-
-      # Step 6: Run mypy
-      - name: Run mypy
+      - name: mypy (soft)
         run: python -m mypy --disable-error-code=import-untyped .
         continue-on-error: true
-
-      # Step 7: Run the flake8 check
-      - name: Run flake8
+      - name: flake8 (soft)
         run: python -m flake8 . --max-line-length=99
         continue-on-error: true
 
-      # Step 8: Run unit tests
-      - name: Run unit tests
+      # Fail on tests
+      - name: unit tests
+        run: python -m unittest -v unit_tests.py
+
+  lint_strict:
+    # Run on main (strict)
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install -r requirements.txt
+      - run: pip install pylint mypy flake8
+            
+      - name: Azure login
+        uses: azure/login@v2 
+        with: 
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Prove az is logged in
+        run: az account show
+
+      # Strict checks
+      - name: pylint (strict)
+        run: python -m pylint --disable=fixme .
+      - name: mypy (strict)
+        run: python -m mypy --disable-error-code=import-untyped .
+      - name: flake8 (strict)
+        run: python -m flake8 . --max-line-length=99
+
+      - name: unit tests
         run: python -m unittest -v unit_tests.py

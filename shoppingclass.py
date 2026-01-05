@@ -1,6 +1,3 @@
-from typing import TypedDict
-
-
 class VegeSyncer:
     def __init__(self, shopping_list: list, customer_name: str):
         self.shopping_list = shopping_list

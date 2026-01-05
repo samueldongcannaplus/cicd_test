@@ -18,7 +18,15 @@ jobs:
           python-version: '3.x'
       - run: pip install -r requirements.txt
       - run: pip install pylint mypy flake8
+      - name: Azure login
+        uses: azure/login@v2 
+        with: 
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Prove az is logged in
+        run: az account show
       # Soft checks
       - name: pylint (soft)
         run: python -m pylint --disable=fixme .

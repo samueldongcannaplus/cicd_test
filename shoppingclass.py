@@ -25,6 +25,7 @@ class VegeSyncer:
         print('hell0')
         print('asdf')
         print('hi')
+        print('asdf')
 
 
 if __name__ == "__main__":

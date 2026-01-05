@@ -21,7 +21,7 @@ class VegeSyncer:
         return False
 
     def printfun(self) -> None:
-        print("fun")
+        print("fun aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
 if __name__ == "__main__":

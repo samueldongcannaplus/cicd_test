@@ -1,0 +1,11 @@
+repos:
+-   repo: https://github.com/samueldongcannaplus/cicd_test
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/samueldongcannaplus/cicd_test
+    rev: 22.10.0
+    hooks:
+    -   id: black

@@ -22,3 +22,6 @@ class VegeSyncer():
         if self.customer_name:
             return True
         return False
+
+if __name__ == '__main__':
+    c = VegeSyncer([], 'aiden')

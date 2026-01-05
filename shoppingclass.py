@@ -22,6 +22,7 @@ class VegeSyncer:
 
     def printfun(self) -> None:
         print("fun aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print('hell0')
 
 
 if __name__ == "__main__":
